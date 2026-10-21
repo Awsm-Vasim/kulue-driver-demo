@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="/kulue-driver-demo/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Kulue Driver Demo</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root {
+    --bg: #f4f1ee; --fg: #222222; --muted: #6b6b6b; --frame: #1d1b1a; --brand: #ff4d00;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161413; --fg: #f2efec; --muted: #a8a19c; --frame: #000000; color-scheme: dark; }
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg); font-family: var(--font);
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left));
+    box-sizing: border-box;
+  }
+  .note { font-size: 13px; color: var(--muted); text-align: center; max-width: 420px; line-height: 1.4; margin: 0; }
+  .note b { color: var(--fg); }
+  .phone {
+    width: min(400px, 100%); flex: 1; max-height: 860px; min-height: 560px;
+    border-radius: 36px; border: 10px solid var(--frame); overflow: hidden;
+    background: #ffffff; position: relative; box-shadow: 0 24px 60px rgba(0,0,0,.18);
+  }
+  #app { position: absolute; inset: 0; }
+  .loading {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px;
+    align-items: center; justify-content: center; color: #6b6b6b; font-size: 14px; background: #ffffff;
+  }
+  .spin { width: 36px; height: 36px; border-radius: 50%; border: 3px solid #ffe2d6; border-top-color: var(--brand); animation: spin .9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+  @media (max-width: 480px) {
+    body { padding: 0; gap: 0; }
+    .note { display: none; }
+    .phone { width: 100%; max-height: none; min-height: 0; border: 0; border-radius: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<p class="note"><b>Kulue Driver</b> · test demo with sample data. Wallet top-ups use a test checkout and chat replies come from a demo console. Nothing here is real. Reloading resets the demo.</p>
+<div class="phone">
+  <div class="loading" id="loading"><div class="spin"></div><span>Loading Kulue…</span></div>
+  <div id="app"></div>
+</div>
+<script src="flutter.js"></script>
+<script>
+  window._flutter = window._flutter || {};
+  _flutter.buildConfig = {"engineRevision":"af7e796e161ae0bb1ff0758c71a7105418bd9ded","wasmHashes":{"wimp.wasm":"e924eaafd801d41e017d178f3fd5cf8a417f641fe35c9ed34a4e1d7582283e0c","webparagraph/canvaskit.wasm":"0ce1b05082efdc8529550e8a01f6ff0593972d55525035010e26f5600aa9f254","skwasm.wasm":"e540fd5e8303b7b68ec2718cb49e9c421f8ade3075b15e02a7059a62654df9a1","chromium/canvaskit.wasm":"ae8ff1d858140f7b1300ced3fa89fb8c9dce0a400a0f4f1e11f6dcfb3315fdcf","canvaskit.wasm":"fbed517a43e82452404446683f00f2e876d835aed84410695759e67b6bb01cd3","skwasm_heavy.wasm":"565f5cc1cca6ab120f11934b105f01fec4b58b480c82e0889dca93af8e6f8635"},"builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"},{}],"useLocalCanvasKit":true};
+  _flutter.loader.load({
+    config: { canvasKitBaseUrl: "canvaskit/" },
+    onEntrypointLoaded: async function (engineInitializer) {
+      const appRunner = await engineInitializer.initializeEngine({ hostElement: document.getElementById("app") });
+      await appRunner.runApp();
+      document.getElementById("loading").hidden = true;
+    },
+  });
+</script>
+</body>
+</html>
